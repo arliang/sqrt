@@ -1,7 +1,7 @@
 /*
       __5__4._1__9___      5 firstRoot
     .| 29 37               parts
-     __25___________
+     __25___________       reducer
   104|  4 37               4 remainder  37 parts[1]
 100+4|__4_16________       100 divider  +4 tryRoot
   1081|   21 00            divider root * 20
@@ -28,22 +28,22 @@ function getFirstRoot(num) {
         }
     }
 }
-function getRoot(roots, parts, i) {
-    var root = roots[i];
-    var part = parts[i];
-    var remainder = remainders[i];
+function getRoot(roots, parts, remainders, i) {
     if (i == 0) {
         return getFirstRoot(part);
     }
-    else {
-        var divider = root * 20;
-        var result = Math.floor(remainder / divider);
-        divider += result;
-        if (divider * result > remainder) {
-            result -= 1;
-        }
-        return result;
+    var root = roots[i];
+    var part = parts[i];
+    var remainder = getRemainder(roots, parts, i - 1)
+    var divider = root * 20;
+    var result = Math.floor(remainder / divider);
+    divider += result;
+    console.log(remainder)
+    if (divider * result > remainder) {
+        result -= 1;
     }
+    return result;
+    
 }
 function getRemainder(roots, parts, i) {
     var root = roots[i];
@@ -51,7 +51,7 @@ function getRemainder(roots, parts, i) {
         return parts[i] - root * root;
     }
     else {
-        return parts[i] - root * 20;
+        return roots[i - 1] * 100 + parts[i] - root * 20;
     }
 }
 function main(num) {
@@ -61,11 +61,18 @@ function main(num) {
     roots = [getFirstRoot(parts[i])];
     remainders = [getRemainder(roots, parts, i)];
     while (++i < parts.length) {
+      roots.push(getRoot(roots, parts, remainders, i))
+      remainders.push(getRemainder(roots, parts,i))
     }
+    return roots
 }
+
 function test() {
     console.log(splitNumIntoParts(123456789));
     for (var i = 0; i < 100; i++) {
         console.assert(getFirstRoot(i) == Math.floor(Math.sqrt(i)));
     }
+    var root = main(123)
+    console.log(root)
 }
+test()
