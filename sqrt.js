@@ -43,7 +43,7 @@ function getRoot(roots, parts, remainders, i) {
         result -= 1;
     }
     return result;
-    
+
 }
 function getRemainder(roots, parts, i) {
     var root = roots[i];
@@ -61,13 +61,13 @@ function main(num) {
     roots = [getFirstRoot(parts[i])];
     remainders = [getRemainder(roots, parts, i)];
     while (++i < parts.length) {
-      roots.push(getRoot(roots, parts, remainders, i))
-      remainders.push(getRemainder(roots, parts,i))
-    }
-    return roots
-}
+        roots.push(getRoot(roots, parts, remainders, i))
+        remainders.push(getRemainder(roots, parts,i))
+      }
+      return roots
+  }
 
-function test() {
+  function test() {
     console.log(splitNumIntoParts(123456789));
     for (var i = 0; i < 100; i++) {
         console.assert(getFirstRoot(i) == Math.floor(Math.sqrt(i)));
